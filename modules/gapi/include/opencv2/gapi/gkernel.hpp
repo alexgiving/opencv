@@ -428,7 +428,7 @@ namespace gapi {
         const char* m_id;
     };
 }
-namespace gapi {
+
     /** \addtogroup gapi_compile_args
      * @{
      */
@@ -647,8 +647,8 @@ namespace gapi {
         friend GAPI_EXPORTS GKernelPackage combine(const GKernelPackage  &lhs,
                                                    const GKernelPackage  &rhs);
     };
-}
-    namespace gapi {
+
+namespace gapi {
     /**
      * @brief Create a kernel package object containing kernels
      * and transformations specified in variadic template argument.
