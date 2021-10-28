@@ -464,7 +464,7 @@ namespace gapi {
     {
 
         /// @private
-        using M = std::unordered_map<std::string, std::pair<gapi::GBackend, gapi::GKernelImpl>>;
+        using M = std::unordered_map<std::string, std::pair<gapi::GBackend, GKernelImpl>>;
 
         /// @private
         M m_id_kernels;
@@ -501,7 +501,7 @@ namespace gapi {
         }
 
     public:
-        void include(const GFunctor& functor)
+        void include(const gapi::GFunctor& functor)
         {
             m_id_kernels[functor.id()] = std::make_pair(functor.backend(), functor.impl());
         }
