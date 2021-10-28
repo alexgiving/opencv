@@ -556,7 +556,7 @@ namespace gapi {
          *
          * @param backend backend which kernels to remove
          */
-        void remove(const GBackend& backend);
+        void remove(const gapi::GBackend& backend);
 
         /**
          * @brief Remove all kernels implementing the given API from
@@ -596,7 +596,7 @@ namespace gapi {
          *
          */
         template<typename KAPI>
-        GBackend lookup() const
+        gapi::GBackend lookup() const
         {
             return lookup(KAPI::id()).first;
         }
@@ -633,7 +633,7 @@ namespace gapi {
          *
          * @return vector of backends
          */
-        std::vector<GBackend> backends() const;
+        std::vector<gapi::GBackend> backends() const;
 
         // TODO: Doxygen bug -- it wants me to place this comment
         // here, not below.
