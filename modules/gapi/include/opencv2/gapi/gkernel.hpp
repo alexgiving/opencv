@@ -464,7 +464,7 @@ namespace gapi {
     {
 
         /// @private
-        using M = std::unordered_map<std::string, std::pair<GBackend, GKernelImpl>>;
+        using M = std::unordered_map<std::string, std::pair<gapi::GBackend, gapi::GKernelImpl>>;
 
         /// @private
         M m_id_kernels;
@@ -649,6 +649,7 @@ namespace gapi {
     };
 
 namespace gapi {
+    using GKernelPackage = cv::GKernelPackage;
     /**
      * @brief Create a kernel package object containing kernels
      * and transformations specified in variadic template argument.
