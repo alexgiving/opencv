@@ -644,8 +644,10 @@ namespace gapi {
          * @param rhs "Right-hand-side" package in the process
          * @return a new kernel package.
          */
+        namespace gapi {
         friend GAPI_EXPORTS GKernelPackage gapi::combine(const GKernelPackage  &lhs,
                                                    const GKernelPackage  &rhs);
+        }
     };
 
 namespace gapi {
