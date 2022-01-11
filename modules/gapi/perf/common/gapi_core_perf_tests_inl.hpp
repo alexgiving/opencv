@@ -2342,7 +2342,8 @@ PERF_TEST_P_(ResizeFxFyPerfTest, TestPerformance)
     cv::Scalar mean = cv::Scalar::all(127);
     cv::Scalar stddev = cv::Scalar::all(40.f);
     cv::randn(in_mat1, mean, stddev);
-    cv::Size sz_out = cv::Size(saturate_cast<int>(sz.width *fx), saturate_cast<int>(sz.height*fy));
+    cv::Size sz_out = cv::Size();
+
     out_mat_gapi = cv::Mat(sz_out, type);
     out_mat_ocv = cv::Mat(sz_out, type);
 
@@ -2357,12 +2358,12 @@ PERF_TEST_P_(ResizeFxFyPerfTest, TestPerformance)
     // Warm-up graph engine:
     auto cc = c.compile(descr_of(gin(in_mat1)),
                         std::move(compile_args));
-    cc(gin(in_mat1), gout(out_mat_gapi));
 
     TEST_CYCLE()
     {
         cc(gin(in_mat1), gout(out_mat_gapi));
     }
+
     // Comparison ////////////////////////////////////////////////////////////
     {
         EXPECT_TRUE(cmpF(out_mat_gapi, out_mat_ocv));
@@ -2647,6 +2648,5 @@ PERF_TEST_P_(SizeRPerfTest, TestPerformance)
 
     SANITY_CHECK_NOTHING();
 }
-
 }
 #endif // OPENCV_GAPI_CORE_PERF_TESTS_INL_HPP

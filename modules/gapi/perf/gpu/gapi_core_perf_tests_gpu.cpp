@@ -334,10 +334,13 @@ INSTANTIATE_TEST_CASE_P(ResizePerfTestGPU, ResizePerfTest,
             Values(cv::compile_args(CORE_GPU))));
 
 INSTANTIATE_TEST_CASE_P(ResizeFxFyPerfTestGPU, ResizeFxFyPerfTest,
-    Combine(Values(AbsSimilarPoints(2, 0.05).to_compare_f()),
-            Values(CV_8UC1, CV_16UC1, CV_16SC1),
+    Combine(Values(AbsExact().to_compare_f()),
+            Values(CV_8UC1, CV_16UC1, CV_16SC1, CV_32FC1,
+                    CV_8UC2, CV_16UC2, CV_16SC2, CV_32FC2,
+                    CV_8UC3, CV_16UC3, CV_16SC3, CV_32FC3,
+                    CV_8UC4, CV_16UC4, CV_16SC4, CV_32FC4),
             Values(cv::INTER_NEAREST, cv::INTER_LINEAR, cv::INTER_AREA),
-            Values( szSmall128, szVGA, sz720p, sz1080p ),
+            Values(cv::Size(13, 13), cv::Size(17, 13), szSmall128, szVGA, sz720p, sz1080p),
             Values(0.5, 0.1),
             Values(0.5, 0.1),
             Values(cv::compile_args(CORE_GPU))));
