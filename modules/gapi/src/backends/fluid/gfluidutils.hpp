@@ -86,6 +86,17 @@ using cv::gapi::own::rintd;
         return;                                            \
     }
 
+// TODO:
+#define SPLIT3_(DST1, DST2, DST3, SRC, OP, ...)               \
+    if (1)                                                    \
+    {                                                         \
+        GAPI_DbgAssert(dst1.meta().chan + dst2.meta().chan +  \
+         dst3.meta().chan == src.meta().chan);                \
+                                                              \
+        OP<DST1, DST2, DST3, SRC>(__VA_ARGS__);               \
+        return;                                               \
+    }
+
 } // namespace fluid
 } // namespace gapi
 } // namespace cv

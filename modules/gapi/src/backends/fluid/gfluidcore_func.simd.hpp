@@ -184,6 +184,14 @@ ABSDIFFC_SIMD(float)
 
 #undef ABSDIFFC_SIMD
 
+#define SPLIT3_SIMD(DST1, DST2, DST3, SRC)                          \
+int split3_simd(const SRC in[], DST1 out1[], DST2 out2[],           \
+                DST3 out3[], const int width);                      \
+
+SPLIT3_SIMD(uint , uint , uint , uint)
+
+#undef SPLIT3_SIMD
+
 #ifndef CV_CPU_OPTIMIZATION_DECLARATIONS_ONLY
 
 struct scale_tag {};
@@ -1567,6 +1575,33 @@ ABSDIFFC_SIMD(ushort)
 ABSDIFFC_SIMD(float)
 
 #undef ABSDIFFC_SIMD
+
+//-------------------------
+//
+// Fluid kernels: Split3
+//
+//-------------------------
+
+#define SPLIT3_SIMD(DST1, DST2, DST3, SRC)                          \
+int split3_simd(const SRC in[], DST1 out1[], DST2 out2[],           \
+                DST3 out3[], const int width)                       \
+{                                                                   \
+    constexpr int nlanes = v_uint8::nlanes;                         \
+    int x = 0;                                                      \
+    for (; x <= width - nlanes; x += nlanes)                        \
+    {                                                               \
+        v_uint8 a, b, c;                                            \
+        v_load_deinterleave(&in[3 * x], a, b, c);                   \
+        vx_store(out1[x], a);                                       \
+        vx_store(out2[x], b);                                       \
+        vx_store(out3[x], c);                                       \
+    }                                                               \
+    return x;                                                       \
+}
+
+SPLIT3_SIMD(uint , uint , uint , uint)
+
+#undef SPLIT3_SIMD
 
 #endif  // CV_CPU_OPTIMIZATION_DECLARATIONS_ONLY
 

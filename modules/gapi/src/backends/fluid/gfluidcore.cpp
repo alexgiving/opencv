@@ -2503,6 +2503,49 @@ GAPI_FLUID_KERNEL(GFluidSelect, cv::gapi::core::GSelect, false)
 //
 //----------------------------------------------------
 
+
+template<typename SRC, typename DST1, typename DST2, typename DST3>
+static void run_split3(Buffer &dst1, Buffer &dst2, Buffer &dst3, const View &src)
+{
+    const auto *in =  src.InLine<uint>(0);
+    auto *out1     = dst1.OutLine<uint>();
+    auto *out2     = dst2.OutLine<uint>();
+    auto *out3     = dst3.OutLine<uint>();
+
+    GAPI_Assert(3 == src.meta().chan);
+    int width = src.length();
+    int w = 0;
+
+#if CV_SIMD
+    w = split3_simd(in, out1, out2, out3, width);
+
+#endif
+    for (; w < width; w++)
+    {
+        out1[w] = in[3*w    ];
+        out2[w] = in[3*w + 1];
+        out3[w] = in[3*w + 2];
+    }
+}
+
+GAPI_FLUID_KERNEL(GFluidSplit3, cv::gapi::core::GSplit3, false)
+{
+    static const int Window = 1;
+
+    static void run(const View &src, Buffer &dst1, Buffer &dst2, Buffer &dst3)
+    {
+        // src must be CV_8UC3, all output must be CV_8UC1
+
+        //     DST1    DST2    DST3    SRC    OP          __VA_ARGS__
+        SPLIT3_(uint , uint , uint , uint, run_split3, dst1, dst2, dst3, src);
+
+        CV_Error(cv::Error::StsBadArg, "unsupported combination of types");
+    }
+};
+
+//========================================================
+
+/*
 GAPI_FLUID_KERNEL(GFluidSplit3, cv::gapi::core::GSplit3, false)
 {
     static const int Window = 1;
@@ -2538,6 +2581,7 @@ GAPI_FLUID_KERNEL(GFluidSplit3, cv::gapi::core::GSplit3, false)
         }
     }
 };
+*/
 
 GAPI_FLUID_KERNEL(GFluidSplit4, cv::gapi::core::GSplit4, false)
 {
